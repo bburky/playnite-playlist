@@ -54,7 +54,7 @@
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="Name" Width="500" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Header="{DynamicResource LOCNameLabel}" Width="500" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Width="150" Header="{DynamicResource LOCTimePlayed}" DisplayMemberBinding="{Binding Playtime, Converter={StaticResource PlayTimeToStringConverter}}"/>
                     <GridViewColumn Width="150" Header="{DynamicResource LOCCompletionStatus}" DisplayMemberBinding="{Binding CompletionStatus}" />
                 </GridView>
