@@ -98,6 +98,13 @@ namespace Playlist
             {
                 updatePlaylistFile();
             };
+            PlayniteApi.Database.Games.ItemCollectionChanged += (sender, changedArgs) =>
+            {
+                foreach (Game game in changedArgs.RemovedItems)
+                {
+                    PlaylistGames.Remove(game);
+                }
+            };
             playlistViewModel = new PlaylistViewModel(this);
             playlistView = new PlaylistView(playlistViewModel);
         }
