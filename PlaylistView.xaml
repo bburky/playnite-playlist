@@ -9,6 +9,14 @@
 
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" />
+        <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsMouseOver}" Value="True">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
     </UserControl.Resources>
  
     <DockPanel>
@@ -34,22 +42,18 @@
                     <GridViewColumn Header="" Width="55">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Button
-                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.StartGameCommand}"
-                                    CommandParameter="{Binding .}"
-                                    Width="40" Height="40" HorizontalAlignment="Right">
-                                    <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}" FontSize="18" />
-                                </Button>
-                            </DataTemplate>
-                        </GridViewColumn.CellTemplate>
-                    </GridViewColumn>
-                    <GridViewColumn Header="" Width="55">
-                        <GridViewColumn.CellTemplate>
-                            <DataTemplate>
-                                <Image Stretch="Uniform" 
-                                    RenderOptions.BitmapScalingMode="Fant"
-                                    Height="40" Width="40" HorizontalAlignment="Center"
-                                    Source="{Binding Icon, Mode=OneWay, Converter={StaticResource ImageStringToImageConverterCached}}" />
+                                <Canvas Height="40">
+                                    <Image Stretch="Uniform" 
+                                        RenderOptions.BitmapScalingMode="Fant"
+                                        Height="38" Width="38" HorizontalAlignment="Center" VerticalAlignment="Center"
+                                        Source="{Binding Icon, Mode=OneWay, Converter={StaticResource ImageStringToImageConverterCached}}" />
+                                    <Button
+                                        Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.StartGameCommand}"
+                                        CommandParameter="{Binding}"
+                                        Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center">
+                                        <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}" FontSize="18" />
+                                    </Button>
+                                </Canvas>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
