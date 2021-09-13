@@ -25,7 +25,6 @@
         </StackPanel>
         <ListView
             x:Name="playlistListView"
-            Margin="5"
             ItemsSource="{Binding PlaylistGames}"
             AllowDrop="True"
             dd:DragDrop.IsDragSource="True"
@@ -61,6 +60,10 @@
             </ListView.View>
             <ListView.ContextMenu>
                 <ContextMenu>
+                    <MenuItem
+                        Header="Show in Library"
+                        Command="{Binding ShowGamesInLibraryCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
                     <MenuItem
                         Header="Remove from Playlist"
                         Command="{Binding RemoveGamesCommand}"

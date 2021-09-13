@@ -19,6 +19,7 @@ namespace Playlist
         public RelayCommand<ObservableCollection<object>> RemoveGamesCommand { get; }
         public RelayCommand<ObservableCollection<object>> MoveGamesToTopCommand { get; }
         public RelayCommand<ObservableCollection<object>> MoveGamesToBottomCommand { get; }
+        public RelayCommand<ObservableCollection<object>> ShowGamesInLibraryCommand { get; }
 
         public PlaylistViewModel(Playlist playlist)
         {
@@ -60,6 +61,14 @@ namespace Playlist
                     PlaylistGames.Remove(game);
                     PlaylistGames.Add(game);
                 }
+            });
+
+            ShowGamesInLibraryCommand = new RelayCommand<ObservableCollection<object>>((games) =>
+            {
+                // The Playnite API only allows selecting one game currently.
+                var game = games.Cast<Game>().First();
+                playniteApi.MainView.SelectGame(game.Id);
+                playniteApi.MainView.SwitchToLibraryView();
             });
         }
     }
