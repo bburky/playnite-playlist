@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:dd="urn:gong-wpf-dragdrop"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600">
 
@@ -10,46 +11,44 @@
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" />
     </UserControl.Resources>
  
-
-
     <DockPanel>
         <StackPanel Orientation="Horizontal" Margin="10,10,0,0" DockPanel.Dock="Top">
             <TextBlock VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True">
                 <Hyperlink Command="{Binding NavigateBackCommand}">
                     <TextBlock Text="&#xea5c;" FontFamily="{DynamicResource FontIcoFont}"
-                               FontSize="26" />
+                        FontSize="26" />
                 </Hyperlink>
             </TextBlock>
             <TextBlock Text="Playlist" VerticalAlignment="Center"
-                        Style="{StaticResource BaseTextBlockStyle}"
-                       Margin="10,0,0,0" FontSize="18"/>
+                Style="{StaticResource BaseTextBlockStyle}"
+                Margin="10,0,0,0" FontSize="18"/>
         </StackPanel>
         <ListView
-            SelectedIndex="1"
             Margin="5"
             ItemsSource="{Binding PlaylistGames}"
-            AllowDrop="True">
-            <ListView.View>
+            AllowDrop="True"
+            dd:DragDrop.IsDragSource="True"
+            dd:DragDrop.IsDropTarget="True">
+        <ListView.View>
                 <GridView>
-                    <GridViewColumn Header="" Width="65">
+                    <GridViewColumn Header="" Width="55">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Button
                                     Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.StartGameCommand}"
                                     CommandParameter="{Binding .}"
-                                    Width="50" Height="40">
-                                    <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}"
-                               FontSize="26" />
+                                    Width="40" Height="40" HorizontalAlignment="Right">
+                                    <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}" FontSize="18" />
                                 </Button>
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>
                     </GridViewColumn>
-                    <GridViewColumn Header="" Width="50">
+                    <GridViewColumn Header="" Width="55">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Image Stretch="Uniform" StretchDirection="DownOnly"
+                                <Image Stretch="Uniform" 
                                     RenderOptions.BitmapScalingMode="Fant"
-                                    Height="32" Width="32" HorizontalAlignment="Center"
+                                    Height="40" Width="40" HorizontalAlignment="Center"
                                     Source="{Binding Icon, Mode=OneWay, Converter={StaticResource ImageStringToImageConverterCached}}" />
                             </DataTemplate>
                         </GridViewColumn.CellTemplate>

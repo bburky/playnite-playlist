@@ -11,6 +11,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace Playlist
 {
@@ -30,22 +31,26 @@ namespace Playlist
             {
                 Title = "Playlist",
                 Type = SiderbarItemType.View,
-                Icon = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "icon.png"),
+                Icon = new TextBlock
+                {
+                    Text = "\ueca6", // Circled play button
+                    FontFamily = ResourceProvider.GetResource("FontIcoFont") as FontFamily,
+                },
                 Opened = () => { return playlistView; }
             };
         }
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
         {
             yield return new GameMenuItem
+            {
+                Description = "Add to Playlist",
+                Action = (itemArgs) =>
                 {
-                    Description = "Add to playlist",
-                    Action = (itemArgs) =>
+                    foreach (Game game in args.Games)
                     {
-                        foreach (Game game in args.Games)
-                        {
-                            playlistViewModel.PlaylistGames.AddMissing(game);
-                        }
+                        playlistViewModel.PlaylistGames.AddMissing(game);
                     }
+                }
             };
         }
 
@@ -53,6 +58,10 @@ namespace Playlist
 
         public Playlist(IPlayniteAPI api) : base(api)
         {
+            // Ensure the library loaded now, relative to the extension DLL.
+            // If the XAML trys to load it later it will incorrectly load it relative to Playnite's executable
+            Assembly.Load("GongSolutions.WPF.DragDrop");
+
             playlistGames = new List<Game>();
             settings = new PlaylistSettingsViewModel(this);
             playniteApi = api;
