@@ -9,6 +9,14 @@
 
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" />
+        <Style x:Key="noGamesText" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding PlaylistGames.Count}" Value="0">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Visibility" Value="Hidden" />
             <Style.Triggers>
@@ -41,9 +49,11 @@
                 Style="{StaticResource BaseTextBlockStyle}"
                 Margin="10,0,0,0" FontSize="18"/>
         </StackPanel>
+ 
         <ListView
             x:Name="playlistListView"
             ItemsSource="{Binding PlaylistGames}"
+            DockPanel.Dock="Top"
             Margin="0,10,0,0"
             BorderThickness="0"
             dd:DragDrop.IsDragSource="True"
@@ -94,5 +104,8 @@
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
+        <TextBlock Style="{StaticResource noGamesText}" TextAlignment="Center" VerticalAlignment="Center">
+            Right click a game in the library and select "Add to Playlist"
+        </TextBlock>
     </DockPanel>
 </UserControl>
