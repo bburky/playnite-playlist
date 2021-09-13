@@ -1,0 +1,64 @@
+﻿<UserControl x:Class="Playlist.PlaylistView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             mc:Ignorable="d"
+             d:DesignHeight="400" d:DesignWidth="600">
+
+    <UserControl.Resources>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" />
+    </UserControl.Resources>
+ 
+
+
+    <DockPanel>
+        <StackPanel Orientation="Horizontal" Margin="10,10,0,0" DockPanel.Dock="Top">
+            <TextBlock VerticalAlignment="Center" WindowChrome.IsHitTestVisibleInChrome="True">
+                <Hyperlink Command="{Binding NavigateBackCommand}">
+                    <TextBlock Text="&#xea5c;" FontFamily="{DynamicResource FontIcoFont}"
+                               FontSize="26" />
+                </Hyperlink>
+            </TextBlock>
+            <TextBlock Text="Playlist" VerticalAlignment="Center"
+                        Style="{StaticResource BaseTextBlockStyle}"
+                       Margin="10,0,0,0" FontSize="18"/>
+        </StackPanel>
+        <ListView
+            SelectedIndex="1"
+            Margin="5"
+            ItemsSource="{Binding PlaylistGames}"
+            AllowDrop="True">
+            <ListView.View>
+                <GridView>
+                    <GridViewColumn Header="" Width="65">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Button
+                                    Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.StartGameCommand}"
+                                    CommandParameter="{Binding .}"
+                                    Width="50" Height="40">
+                                    <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}"
+                               FontSize="26" />
+                                </Button>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Image Stretch="Uniform" StretchDirection="DownOnly"
+                                    RenderOptions.BitmapScalingMode="Fant"
+                                    Height="32" Width="32" HorizontalAlignment="Center"
+                                    Source="{Binding Icon, Mode=OneWay, Converter={StaticResource ImageStringToImageConverterCached}}" />
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="Name" Width="500" DisplayMemberBinding="{Binding Name}" />
+                    <GridViewColumn Width="150" Header="{DynamicResource LOCTimePlayed}" DisplayMemberBinding="{Binding Playtime, Converter={StaticResource PlayTimeToStringConverter}}"/>
+                    <GridViewColumn Width="150" Header="{DynamicResource LOCCompletionStatus}" DisplayMemberBinding="{Binding CompletionStatus}" />
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </DockPanel>
+</UserControl>

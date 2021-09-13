@@ -48,12 +48,16 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="PlaylistViewModel.cs" />
     <Compile Include="Playlist.cs" />
     <Compile Include="PlaylistSettings.cs" />
     <Compile Include="PlaylistSettingsView.xaml.cs">
       <DependentUpon>PlaylistSettingsView.xaml</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="PlaylistView.xaml.cs">
+      <DependentUpon>PlaylistView.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <None Include="extension.yaml">
@@ -63,6 +67,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="PlaylistSettingsView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PlaylistView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
