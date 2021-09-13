@@ -19,7 +19,6 @@ namespace Playlist
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private PlaylistSettingsViewModel settings { get; set; }
         private PlaylistViewModel playlistViewModel { get; set; }
         private PlaylistView playlistView { get; set; }
         private IPlayniteAPI playniteApi;
@@ -63,14 +62,9 @@ namespace Playlist
             Assembly.Load("GongSolutions.WPF.DragDrop");
 
             playlistGames = new List<Game>();
-            settings = new PlaylistSettingsViewModel(this);
             playniteApi = api;
             playlistViewModel = new PlaylistViewModel(this, api);
             playlistView = new PlaylistView(playlistViewModel);
-            Properties = new GenericPluginProperties
-            {
-                HasSettings = true
-            };
         }
 
         public override void OnGameInstalled(OnGameInstalledEventArgs args)
@@ -111,16 +105,6 @@ namespace Playlist
         public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
         {
             // Add code to be executed when library is updated.
-        }
-
-        public override ISettings GetSettings(bool firstRunSettings)
-        {
-            return settings;
-        }
-
-        public override UserControl GetSettingsView(bool firstRunSettings)
-        {
-            return new PlaylistSettingsView();
         }
     }
 }
