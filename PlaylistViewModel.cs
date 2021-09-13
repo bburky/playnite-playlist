@@ -20,11 +20,11 @@ namespace Playlist
         public RelayCommand<ObservableCollection<object>> MoveGamesToTopCommand { get; }
         public RelayCommand<ObservableCollection<object>> MoveGamesToBottomCommand { get; }
 
-        public PlaylistViewModel(Playlist playlist, IPlayniteAPI playniteApi)
+        public PlaylistViewModel(Playlist playlist)
         {
             this.playlist = playlist;
-            this.PlaylistGames = new ObservableCollection<Game>();
-            this.playniteApi = playniteApi;
+            PlaylistGames = playlist.PlaylistGames;
+            playniteApi = playlist.PlayniteApi;
 
             NavigateBackCommand = new RelayCommand<object>((a) =>
             {
@@ -38,9 +38,9 @@ namespace Playlist
 
             RemoveGamesCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
-                foreach (var game in games.ToList())
+                foreach (var game in games.Cast<Game>().ToList())
                 {
-                    this.PlaylistGames.Remove(game as Game);
+                    PlaylistGames.Remove(game);
                 }
             });
 
@@ -48,8 +48,8 @@ namespace Playlist
             {
                 foreach (var game in games.Cast<Game>().OrderBy((g) => this.PlaylistGames.IndexOf(g)).Reverse().ToList())
                 {
-                    this.PlaylistGames.Remove(game as Game);
-                    this.PlaylistGames.Insert(0, game as Game);
+                    PlaylistGames.Remove(game as Game);
+                    PlaylistGames.Insert(0, game as Game);
                 }
             });
 
@@ -57,8 +57,8 @@ namespace Playlist
             {
                 foreach (var game in games.Cast<Game>().OrderBy((g) => this.PlaylistGames.IndexOf(g)).ToList())
                 {
-                    this.PlaylistGames.Remove(game);
-                    this.PlaylistGames.Add(game);
+                    PlaylistGames.Remove(game);
+                    PlaylistGames.Add(game);
                 }
             });
         }

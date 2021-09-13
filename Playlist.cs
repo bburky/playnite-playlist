@@ -4,6 +4,7 @@ using Playnite.SDK.Models;
 using Playnite.SDK.Plugins;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -20,10 +21,13 @@ namespace Playlist
         private static readonly ILogger logger = LogManager.GetLogger();
 
         private PlaylistViewModel playlistViewModel { get; set; }
-        private PlaylistView playlistView { get; set; }
-        private IPlayniteAPI playniteApi;
 
-        private List<Game> playlistGames { get; set; }
+        private PlaylistView playlistView { get; set; }
+
+        public ObservableCollection<Game> PlaylistGames { get; set; }
+
+        private const string playlistPath = "playlist.txt";
+
         public override IEnumerable<SidebarItem> GetSidebarItems()
         {
             yield return new SidebarItem
@@ -60,51 +64,42 @@ namespace Playlist
             // Ensure the library loaded now, relative to the extension DLL.
             // If the XAML trys to load it later it will incorrectly load it relative to Playnite's executable
             Assembly.Load("GongSolutions.WPF.DragDrop");
-
-            playlistGames = new List<Game>();
-            playniteApi = api;
-            playlistViewModel = new PlaylistViewModel(this, api);
-            playlistView = new PlaylistView(playlistViewModel);
         }
 
-        public override void OnGameInstalled(OnGameInstalledEventArgs args)
+        private IEnumerable<Game> loadPlaylistFile()
         {
-            // Add code to be executed when game is finished installing.
+            var path = Path.Combine(GetPluginUserDataPath(), playlistPath);
+            if (File.Exists(path)) {
+                foreach (var guid in File.ReadLines(path))
+                {
+                    var game = this.PlayniteApi.Database.Games.Get(Guid.Parse(guid));
+                    if (game != null)
+                    {
+                        yield return game;
+                    }
+                }
+            }
         }
 
-        public override void OnGameStarted(OnGameStartedEventArgs args)
+        private void updatePlaylistFile()
         {
-            // Add code to be executed when game is started running.
-        }
-
-        public override void OnGameStarting(OnGameStartingEventArgs args)
-        {
-            // Add code to be executed when game is preparing to be started.
-        }
-
-        public override void OnGameStopped(OnGameStoppedEventArgs args)
-        {
-            // Add code to be executed when game is preparing to be started.
-        }
-
-        public override void OnGameUninstalled(OnGameUninstalledEventArgs args)
-        {
-            // Add code to be executed when game is uninstalled.
+            var path = Path.Combine(GetPluginUserDataPath(), playlistPath);
+            File.WriteAllLines(path, this.PlaylistGames.Select((g) => g.Id.ToString()));
         }
 
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
-            // Add code to be executed when Playnite is initialized.
-        }
+            // Initialization is done inside OnApplicationStarted, otherwise
+            // loadPlaylistFile runs too early in Playnite's startup and
+            // cannot call PlayniteApi.Database.Games.Get()
 
-        public override void OnApplicationStopped(OnApplicationStoppedEventArgs args)
-        {
-            // Add code to be executed when Playnite is shutting down.
-        }
-
-        public override void OnLibraryUpdated(OnLibraryUpdatedEventArgs args)
-        {
-            // Add code to be executed when library is updated.
+            PlaylistGames = new ObservableCollection<Game>(loadPlaylistFile());
+            PlaylistGames.CollectionChanged += (sender, changedArgs) =>
+            {
+                updatePlaylistFile();
+            };
+            playlistViewModel = new PlaylistViewModel(this);
+            playlistView = new PlaylistView(playlistViewModel);
         }
     }
 }
