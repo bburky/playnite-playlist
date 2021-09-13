@@ -24,12 +24,13 @@
                 Margin="10,0,0,0" FontSize="18"/>
         </StackPanel>
         <ListView
+            x:Name="playlistListView"
             Margin="5"
             ItemsSource="{Binding PlaylistGames}"
             AllowDrop="True"
             dd:DragDrop.IsDragSource="True"
             dd:DragDrop.IsDropTarget="True">
-        <ListView.View>
+            <ListView.View>
                 <GridView>
                     <GridViewColumn Header="" Width="55">
                         <GridViewColumn.CellTemplate>
@@ -58,6 +59,14 @@
                     <GridViewColumn Width="150" Header="{DynamicResource LOCCompletionStatus}" DisplayMemberBinding="{Binding CompletionStatus}" />
                 </GridView>
             </ListView.View>
+            <ListView.ContextMenu>
+                <ContextMenu>
+                    <MenuItem
+                        Header="Remove from Playlist"
+                        Command="{Binding RemoveGamesCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
+                </ContextMenu>
+            </ListView.ContextMenu>
         </ListView>
     </DockPanel>
 </UserControl>

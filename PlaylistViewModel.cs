@@ -15,7 +15,8 @@ namespace Playlist
         private IPlayniteAPI playniteApi;
         public ObservableCollection<Game> PlaylistGames { get; set; }
         public RelayCommand<object> NavigateBackCommand { get; }
-        public RelayCommand<object> StartGameCommand { get; }
+        public RelayCommand<Game> StartGameCommand { get; }
+        public RelayCommand<ObservableCollection<object>> RemoveGamesCommand { get; }
 
         public PlaylistViewModel(Playlist playlist, IPlayniteAPI playniteApi)
         {
@@ -28,10 +29,18 @@ namespace Playlist
                 playniteApi.MainView.SwitchToLibraryView();
             });
 
-            StartGameCommand = new RelayCommand<object>((a) =>
+            StartGameCommand = new RelayCommand<Game>((game) =>
             {
-                Game game = a as Game;
                 playniteApi.StartGame(game.Id);
+            });
+
+            RemoveGamesCommand = new RelayCommand<ObservableCollection<object>>((games) =>
+            {
+                
+                foreach (var game in games.ToList())
+                {
+                    this.PlaylistGames.Remove(game as Game);
+                }
             });
         }
     }
