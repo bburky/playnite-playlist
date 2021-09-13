@@ -15,6 +15,16 @@
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsMouseOver}" Value="True">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsSelected}" Value="True" />
+                        <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=SelectedItems.Count}" Value="1" />
+                    </MultiDataTrigger.Conditions>
+                    <MultiDataTrigger.Setters>
+                        <Setter Property="Visibility" Value="Visible" />
+                        <Setter Property="IsDefault" Value="True" />
+                    </MultiDataTrigger.Setters>
+                </MultiDataTrigger>
             </Style.Triggers>
         </Style>
     </UserControl.Resources>
