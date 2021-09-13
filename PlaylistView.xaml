@@ -67,7 +67,7 @@
                                     <Image Stretch="Uniform" 
                                         RenderOptions.BitmapScalingMode="Fant"
                                         Height="38" Width="38" HorizontalAlignment="Center" VerticalAlignment="Center"
-                                        Source="{Binding Icon, Mode=OneWay, Converter={StaticResource ImageStringToImageConverterCached}}" />
+                                        Source="{Binding Icon, Mode=OneWay, Converter={StaticResource ImageStringToImageConverterCached}, FallbackValue={StaticResource DefaultGameIcon}}" />
                                     <Button
                                         Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.StartGameCommand}"
                                         CommandParameter="{Binding}"
