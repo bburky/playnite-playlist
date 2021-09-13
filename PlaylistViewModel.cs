@@ -17,6 +17,8 @@ namespace Playlist
         public RelayCommand<object> NavigateBackCommand { get; }
         public RelayCommand<Game> StartGameCommand { get; }
         public RelayCommand<ObservableCollection<object>> RemoveGamesCommand { get; }
+        public RelayCommand<ObservableCollection<object>> MoveGamesToTopCommand { get; }
+        public RelayCommand<ObservableCollection<object>> MoveGamesToBottomCommand { get; }
 
         public PlaylistViewModel(Playlist playlist, IPlayniteAPI playniteApi)
         {
@@ -36,10 +38,27 @@ namespace Playlist
 
             RemoveGamesCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
-                
                 foreach (var game in games.ToList())
                 {
                     this.PlaylistGames.Remove(game as Game);
+                }
+            });
+
+            MoveGamesToTopCommand = new RelayCommand<ObservableCollection<object>>((games) =>
+            {
+                foreach (var game in games.Cast<Game>().OrderBy((g) => this.PlaylistGames.IndexOf(g)).Reverse().ToList())
+                {
+                    this.PlaylistGames.Remove(game as Game);
+                    this.PlaylistGames.Insert(0, game as Game);
+                }
+            });
+
+            MoveGamesToBottomCommand = new RelayCommand<ObservableCollection<object>>((games) =>
+            {
+                foreach (var game in games.Cast<Game>().OrderBy((g) => this.PlaylistGames.IndexOf(g)).ToList())
+                {
+                    this.PlaylistGames.Remove(game);
+                    this.PlaylistGames.Add(game);
                 }
             });
         }

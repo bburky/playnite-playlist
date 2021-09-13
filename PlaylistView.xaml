@@ -65,6 +65,14 @@
                         Header="Remove from Playlist"
                         Command="{Binding RemoveGamesCommand}"
                         CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
+                    <MenuItem
+                        Header="Move to top"
+                        Command="{Binding MoveGamesToTopCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
+                    <MenuItem
+                        Header="Move to bottom"
+                        Command="{Binding MoveGamesToBottomCommand}"
+                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
                 </ContextMenu>
             </ListView.ContextMenu>
         </ListView>
