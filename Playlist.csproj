@@ -76,4 +76,12 @@
     </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="Zip" BeforeTargets="AfterBuild">
+    <ItemGroup>
+      <ZipFiles Include="README.md" />
+      <ZipFiles Include="LICENSE" />
+      <ZipFiles Include="$(OutputPath)*" Exclude="$(OutputPath)Playnite.SDK.*" />
+    </ItemGroup>
+    <Exec Command="PowerShell -NoProfile -command Compress-Archive -Force @(ZipFiles, ',') '$(OutputPath)..\$(AssemblyName).zip' ; Move-Item '$(OutputPath)..\$(AssemblyName).zip' '$(OutputPath)..\$(AssemblyName).pext'" />
+  </Target>
 </Project>
