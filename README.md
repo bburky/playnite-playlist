@@ -1,14 +1,16 @@
 # Playlist extension for [Playnite](https://playnite.link/)
 
-This extension provides a sidebar action with a "playlist" of a queue of games.
+This extension provides a sidebar action with a manually ordered "playlist" queue of games.
 
 Games can be added to the playlist by right clicking them in the library view and selecting "Add to Playlist".
 
-The playlist is accessible from the left sidebar in Playnite. Games can be reordered with drag and drop. Right click to remove or move a group of games to the top or the bottom. Games can be launched from the play button in the playlist.
-
 This extension can be used as a simple quick access game list, or you can use it to work through your backlog of games. Move games to the top of the list that you intend to play soon. 
 
+The playlist is accessible from the left sidebar in Playnite. Games can be reordered with drag and drop. Right click to remove games, or move a group of games to the top or the bottom. Games can be launched from the play button in the playlist or by pressing enter on the the keyboard.
+
 This extension requires Playnite 9 or newer.
+
+![Playlist extension screenshot](screenshots/Playlist.gif)
 
 ## External libraries, etc.
 
