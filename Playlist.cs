@@ -5,12 +5,9 @@ using Playnite.SDK.Plugins;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -20,9 +17,9 @@ namespace Playlist
     {
         private static readonly ILogger logger = LogManager.GetLogger();
 
-        private PlaylistViewModel playlistViewModel { get; set; }
+        private PlaylistViewModel PlaylistViewModel { get; set; }
 
-        private PlaylistView playlistView { get; set; }
+        private PlaylistView PlaylistView { get; set; }
 
         public ObservableCollection<Game> PlaylistGames { get; set; }
 
@@ -39,7 +36,7 @@ namespace Playlist
                     Text = "\ueca6", // Circled play button
                     FontFamily = ResourceProvider.GetResource("FontIcoFont") as FontFamily,
                 },
-                Opened = () => { return playlistView; }
+                Opened = () => { return PlaylistView; }
             };
         }
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
@@ -51,7 +48,7 @@ namespace Playlist
                 {
                     foreach (Game game in args.Games)
                     {
-                        playlistViewModel.PlaylistGames.AddMissing(game);
+                        PlaylistViewModel.PlaylistGames.AddMissing(game);
                     }
                 }
             };
@@ -66,13 +63,14 @@ namespace Playlist
             Assembly.Load("GongSolutions.WPF.DragDrop");
         }
 
-        private IEnumerable<Game> loadPlaylistFile()
+        private IEnumerable<Game> LoadPlaylistFile()
         {
-            var path = Path.Combine(GetPluginUserDataPath(), playlistPath);
-            if (File.Exists(path)) {
-                foreach (var guid in File.ReadLines(path))
+            string path = Path.Combine(GetPluginUserDataPath(), playlistPath);
+            if (File.Exists(path))
+            {
+                foreach (string guid in File.ReadLines(path))
                 {
-                    var game = this.PlayniteApi.Database.Games.Get(Guid.Parse(guid));
+                    Game game = PlayniteApi.Database.Games.Get(Guid.Parse(guid));
                     if (game != null)
                     {
                         yield return game;
@@ -81,10 +79,10 @@ namespace Playlist
             }
         }
 
-        private void updatePlaylistFile()
+        private void UpdatePlaylistFile()
         {
-            var path = Path.Combine(GetPluginUserDataPath(), playlistPath);
-            File.WriteAllLines(path, this.PlaylistGames.Select((g) => g.Id.ToString()));
+            string path = Path.Combine(GetPluginUserDataPath(), playlistPath);
+            File.WriteAllLines(path, PlaylistGames.Select((g) => g.Id.ToString()));
         }
 
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
@@ -93,10 +91,10 @@ namespace Playlist
             // loadPlaylistFile runs too early in Playnite's startup and
             // cannot call PlayniteApi.Database.Games.Get()
 
-            PlaylistGames = new ObservableCollection<Game>(loadPlaylistFile());
+            PlaylistGames = new ObservableCollection<Game>(LoadPlaylistFile());
             PlaylistGames.CollectionChanged += (sender, changedArgs) =>
             {
-                updatePlaylistFile();
+                UpdatePlaylistFile();
             };
             PlayniteApi.Database.Games.ItemCollectionChanged += (sender, changedArgs) =>
             {
@@ -105,8 +103,8 @@ namespace Playlist
                     PlaylistGames.Remove(game);
                 }
             };
-            playlistViewModel = new PlaylistViewModel(this);
-            playlistView = new PlaylistView(playlistViewModel);
+            PlaylistViewModel = new PlaylistViewModel(this);
+            PlaylistView = new PlaylistView(PlaylistViewModel);
         }
     }
 }

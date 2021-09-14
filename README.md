@@ -6,6 +6,8 @@ Games can be added to the playlist by right clicking them in the library view an
 
 The playlist is accessible from the left sidebar in Playnite. Games can be reordered with drag and drop. Right click to remove or move a group of games to the top or the bottom. Games can be launched from the play button in the playlist.
 
+This extension can be used as a simple quick access game list, or you can use it to work through your backlog of games. Move games to the top of the list that you intend to play soon. 
+
 This extension requires Playnite 9 or newer.
 
 ## External libraries, etc.

@@ -1,24 +1,29 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
-using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Playlist
 {
     public class PlaylistViewModel : ObservableObject
     {
-        private Playlist playlist;
-        private IPlayniteAPI playniteApi;
+        private readonly Playlist playlist;
+
+        private readonly IPlayniteAPI playniteApi;
+
         public ObservableCollection<Game> PlaylistGames { get; set; }
+
         public RelayCommand<object> NavigateBackCommand { get; }
+
         public RelayCommand<Game> StartGameCommand { get; }
+
         public RelayCommand<ObservableCollection<object>> RemoveGamesCommand { get; }
+
         public RelayCommand<ObservableCollection<object>> MoveGamesToTopCommand { get; }
+
         public RelayCommand<ObservableCollection<object>> MoveGamesToBottomCommand { get; }
+
         public RelayCommand<ObservableCollection<object>> ShowGamesInLibraryCommand { get; }
 
         public PlaylistViewModel(Playlist playlist)
@@ -39,7 +44,7 @@ namespace Playlist
 
             RemoveGamesCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
-                foreach (var game in games.Cast<Game>().ToList())
+                foreach (Game game in games.Cast<Game>().ToList())
                 {
                     PlaylistGames.Remove(game);
                 }
@@ -47,16 +52,16 @@ namespace Playlist
 
             MoveGamesToTopCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
-                foreach (var game in games.Cast<Game>().OrderBy((g) => this.PlaylistGames.IndexOf(g)).Reverse().ToList())
+                foreach (Game game in games.Cast<Game>().OrderBy((g) => PlaylistGames.IndexOf(g)).Reverse().ToList())
                 {
-                    PlaylistGames.Remove(game as Game);
-                    PlaylistGames.Insert(0, game as Game);
+                    PlaylistGames.Remove(game);
+                    PlaylistGames.Insert(0, game);
                 }
             });
 
             MoveGamesToBottomCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
-                foreach (var game in games.Cast<Game>().OrderBy((g) => this.PlaylistGames.IndexOf(g)).ToList())
+                foreach (Game game in games.Cast<Game>().OrderBy((g) => PlaylistGames.IndexOf(g)).ToList())
                 {
                     PlaylistGames.Remove(game);
                     PlaylistGames.Add(game);
@@ -66,7 +71,8 @@ namespace Playlist
             ShowGamesInLibraryCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
                 // The Playnite API only allows selecting one game currently.
-                var game = games.Cast<Game>().First();
+                Game game = games.Cast<Game>().First();
+                // This does select the game, but does not currently scroll it into view
                 playniteApi.MainView.SelectGame(game.Id);
                 playniteApi.MainView.SwitchToLibraryView();
             });

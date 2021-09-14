@@ -10,6 +10,7 @@
     <UserControl.Resources>
         <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" />
         <Style x:Key="noGamesText" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
+            <!-- Show instructions if no games in playlist -->
             <Setter Property="Visibility" Value="Hidden" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding PlaylistGames.Count}" Value="0">
@@ -21,9 +22,11 @@
             <Setter Property="Visibility" Value="Hidden" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsMouseOver}" Value="True">
+                    <!-- Show button on ListViewItem row mouseover -->
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
                 <MultiDataTrigger>
+                    <!-- Show button and set IsDefault on the selected item, but only if one item is selected -->
                     <MultiDataTrigger.Conditions>
                         <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsSelected}" Value="True" />
                         <Condition Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=SelectedItems.Count}" Value="1" />
@@ -64,6 +67,7 @@
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
                                 <Canvas Height="40">
+                                    <!-- Just draw the play button on top of the icon. Ensure the Image is smaller than the Button and both are centered. -->
                                     <Image Stretch="Uniform" 
                                         RenderOptions.BitmapScalingMode="Fant"
                                         Height="38" Width="38" HorizontalAlignment="Center" VerticalAlignment="Center"
