@@ -28,6 +28,7 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
+
         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
             <Setter Property="Content" Value="&#xec74;" />
             <Setter Property="FontSize" Value="18" />
@@ -78,6 +79,17 @@
                 </MultiDataTrigger>
             </Style.Triggers>
         </Style>
+
+        <Style x:Key="imageIcon"  TargetType="Image">
+            <!-- Set the image icon visiblity to the inverse of the button's visiblity -->
+            <Setter Property="Visibility" Value="Hidden" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Canvas}}, Path=Children[1].Visibility}" Value="Hidden">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
     </UserControl.Resources>
  
     <DockPanel>
@@ -106,17 +118,15 @@
                     <GridViewColumn Header="" Width="55">
                         <GridViewColumn.CellTemplate>
                             <DataTemplate>
-                                <Canvas Height="40">
-                                    <!-- Just draw the play button on top of the icon. Ensure the Image is smaller than the Button and both are centered. -->
-                                    <Image Stretch="Uniform" 
+                                <Canvas Height="38" Margin="1">
+                                    <Image Style="{StaticResource imageIcon}" Stretch="Uniform" 
                                         RenderOptions.BitmapScalingMode="Fant"
                                         Height="38" Width="38" HorizontalAlignment="Center" VerticalAlignment="Center"
                                         Source="{Binding Icon, Mode=OneWay, Converter={StaticResource ImageStringToImageConverterCached}, FallbackValue={StaticResource DefaultGameIcon}}" />
                                     <Button
-
                                         Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.StartGameCommand}"
                                         CommandParameter="{Binding}"
-                                        Width="40" Height="40" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextBlock.FontFamily="{DynamicResource FontIcoFont}">
+                                        Width="38" Height="38" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextBlock.FontFamily="{DynamicResource FontIcoFont}">
                                     </Button>
                                 </Canvas>
                             </DataTemplate>
