@@ -8,7 +8,6 @@
              d:DesignHeight="400" d:DesignWidth="600">
 
     <UserControl.Resources>
-        <Style TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}" />
         <Style x:Key="noGamesText" TargetType="TextBlock" BasedOn="{StaticResource BaseTextBlockStyle}">
             <!-- Show instructions if no games in playlist -->
             <Setter Property="Visibility" Value="Hidden" />
@@ -18,13 +17,54 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+        <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
+            <Style.Triggers>
+                <MultiDataTrigger>
+                    <MultiDataTrigger.Conditions>
+                        <Condition Binding="{Binding IsInstalled}" Value="False" />
+                        <Condition Binding="{Binding IsSelected, RelativeSource={RelativeSource Self}}" Value="False" />
+                    </MultiDataTrigger.Conditions>
+                    <Setter Property="Foreground" Value="{StaticResource TextBrushDarker}" />
+                </MultiDataTrigger>
+            </Style.Triggers>
+        </Style>
         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+            <Setter Property="Content" Value="&#xec74;" />
+            <Setter Property="FontSize" Value="18" />
             <Setter Property="Visibility" Value="Hidden" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListViewItem}}, Path=IsMouseOver}" Value="True">
                     <!-- Show button on ListViewItem row mouseover -->
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
+
+                <DataTrigger Binding="{Binding IsInstalled}" Value="False" >
+                    <!-- Show down arrow for uninstalled games -->
+                    <Setter Property="FontSize" Value="30" />
+                    <Setter Property="Content" Value="&#xea5b;" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding IsLaunching}" Value="True">
+                    <!-- Show circular arrow for launching games -->
+                    <Setter Property="FontSize" Value="19" />
+                    <Setter Property="Content" Value="&#xec80;" />
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+
+                <DataTrigger Binding="{Binding IsUninstalling}" Value="True">
+                    <!-- Show circular arrow for uninstalling games -->
+                    <Setter Property="FontSize" Value="19" />
+                    <Setter Property="Content" Value="&#xec80;" />
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+
+                <DataTrigger  Binding="{Binding IsInstalling}" Value="True">
+                    <!-- Show circular arrow for installing games -->
+                    <Setter Property="FontSize" Value="19" />
+                    <Setter Property="Content" Value="&#xec80;" />
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+
                 <MultiDataTrigger>
                     <!-- Show button and set IsDefault on the selected item, but only if one item is selected -->
                     <MultiDataTrigger.Conditions>
@@ -73,10 +113,10 @@
                                         Height="38" Width="38" HorizontalAlignment="Center" VerticalAlignment="Center"
                                         Source="{Binding Icon, Mode=OneWay, Converter={StaticResource ImageStringToImageConverterCached}, FallbackValue={StaticResource DefaultGameIcon}}" />
                                     <Button
+
                                         Command="{Binding RelativeSource={RelativeSource AncestorType=UserControl}, Path=DataContext.StartGameCommand}"
                                         CommandParameter="{Binding}"
-                                        Width="40" Height="40" HorizontalAlignment="Center" VerticalAlignment="Center">
-                                        <TextBlock Text="&#xec74;" FontFamily="{DynamicResource FontIcoFont}" FontSize="18" />
+                                        Width="40" Height="40" Padding="0" HorizontalAlignment="Center" VerticalAlignment="Center" TextBlock.FontFamily="{DynamicResource FontIcoFont}">
                                     </Button>
                                 </Canvas>
                             </DataTemplate>
