@@ -17,6 +17,7 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
+
         <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
             <Style.Triggers>
                 <MultiDataTrigger>
@@ -27,6 +28,30 @@
                     <Setter Property="Foreground" Value="{StaticResource TextBrushDarker}" />
                 </MultiDataTrigger>
             </Style.Triggers>
+
+            <Setter Property="ContextMenu">
+                <!-- Only set the ContextMenu for ListViewItems to avoid a ContextMenu on the header -->
+                <Setter.Value>
+                    <ContextMenu DataContext="{x:Reference Name=playlistListView}">
+                        <MenuItem
+                            Header="Show in Library"
+                            Command="{Binding DataContext.ShowGamesInLibraryCommand}"
+                            CommandParameter="{Binding SelectedItems}" />
+                        <MenuItem
+                            Header="Remove from Playlist"
+                            Command="{Binding DataContext.RemoveGamesCommand}"
+                            CommandParameter="{Binding SelectedItems}" />
+                        <MenuItem
+                            Header="Move to top"
+                            Command="{Binding DataContext.MoveGamesToTopCommand}"
+                            CommandParameter="{Binding SelectedItems}" />
+                        <MenuItem
+                            Header="Move to bottom"
+                            Command="{Binding DataContext.MoveGamesToBottomCommand}"
+                            CommandParameter="{Binding SelectedItems}" />
+                    </ContextMenu>
+                </Setter.Value>
+            </Setter>
         </Style>
 
         <Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
@@ -80,7 +105,7 @@
             </Style.Triggers>
         </Style>
 
-        <Style x:Key="imageIcon"  TargetType="Image">
+        <Style x:Key="imageIcon" TargetType="Image">
             <!-- Set the image icon visiblity to the inverse of the button's visiblity -->
             <Setter Property="Visibility" Value="Hidden" />
             <Style.Triggers>
@@ -137,26 +162,6 @@
                     <GridViewColumn Width="150" Header="{DynamicResource LOCCompletionStatus}" DisplayMemberBinding="{Binding CompletionStatus}" />
                 </GridView>
             </ListView.View>
-            <ListView.ContextMenu>
-                <ContextMenu>
-                    <MenuItem
-                        Header="Show in Library"
-                        Command="{Binding ShowGamesInLibraryCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
-                    <MenuItem
-                        Header="Remove from Playlist"
-                        Command="{Binding RemoveGamesCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
-                    <MenuItem
-                        Header="Move to top"
-                        Command="{Binding MoveGamesToTopCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
-                    <MenuItem
-                        Header="Move to bottom"
-                        Command="{Binding MoveGamesToBottomCommand}"
-                        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContextMenu}}, Path=PlacementTarget.SelectedItems}"/>
-                </ContextMenu>
-            </ListView.ContextMenu>
         </ListView>
         <TextBlock Style="{StaticResource noGamesText}" TextAlignment="Center" VerticalAlignment="Center">
             Right click a game in the library and select "Add to Playlist"

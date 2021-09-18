@@ -70,6 +70,10 @@ namespace Playlist
 
             ShowGamesInLibraryCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
+                if (games.Count == 0)
+                {
+                    return;
+                } 
                 // The Playnite API only allows selecting one game currently.
                 Game game = games.Cast<Game>().First();
                 // This does select the game, but does not currently scroll it into view
