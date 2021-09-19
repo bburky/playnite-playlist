@@ -44,6 +44,7 @@ namespace Playlist
             yield return new GameMenuItem
             {
                 Description = "Add to Playlist",
+                Icon = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "icon.png"),
                 Action = (itemArgs) =>
                 {
                     foreach (Game game in args.Games)
