@@ -34,9 +34,44 @@
                 <Setter.Value>
                     <ContextMenu DataContext="{x:Reference Name=playlistListView}">
                         <MenuItem
+                            InputGestureText="{Binding DataContext.StartGameCommand.GestureText}"
+                            Command="{Binding DataContext.StartGameCommand}"
+                            CommandParameter="{Binding SelectedItems[0]}">
+                            <MenuItem.Style>
+                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                    <Setter Property="Header" Value="{DynamicResource LOCPlayGame}" />
+                                    <Setter Property="Icon" Value="{DynamicResource PlayIcon}" />
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedItems.Count}" Value="1">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                        <DataTrigger Binding="{Binding SelectedItems[0].IsInstalled}" Value="False" >
+                                            <Setter Property="Header" Value="{DynamicResource LOCInstallGame}" />
+                                            <Setter Property="Icon" Value="{DynamicResource InstallIcon}" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </MenuItem.Style>
+                        </MenuItem>
+                        <Separator>
+                            <Separator.Style>
+                                <Style TargetType="Separator" BasedOn="{StaticResource {x:Type Separator}}">
+                                    <Setter Property="Visibility" Value="Collapsed" />
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding SelectedItems.Count}" Value="1">
+                                            <Setter Property="Visibility" Value="Visible" />
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </Separator.Style>
+                        </Separator>
+                        <MenuItem
                             Header="Show in Library"
+                            Icon="{DynamicResource SidebarLibraryIcon}"
                             Command="{Binding DataContext.ShowGamesInLibraryCommand}"
                             CommandParameter="{Binding SelectedItems}" />
+                        <Separator />
                         <MenuItem Header="{DynamicResource LOCSetCompletionStatus}" ItemsSource="{Binding DataContext.CompletionStatusCommands}">
                             <MenuItem.ItemContainerStyle>
                                 <Style TargetType="MenuItem">
@@ -46,18 +81,23 @@
                                 </Style>
                             </MenuItem.ItemContainerStyle>
                         </MenuItem>
+                        <Separator />
                         <MenuItem
-                            Header="Remove from Playlist"
-                            Command="{Binding DataContext.RemoveGamesCommand}"
-                            CommandParameter="{Binding SelectedItems}" />
-                        <MenuItem
-                            Header="Move to top"
+                            Header="Move to Top"
                             Command="{Binding DataContext.MoveGamesToTopCommand}"
                             CommandParameter="{Binding SelectedItems}" />
                         <MenuItem
-                            Header="Move to bottom"
+                            Header="Move to Bottom"
                             Command="{Binding DataContext.MoveGamesToBottomCommand}"
                             CommandParameter="{Binding SelectedItems}" />
+                        <Separator />
+                        <MenuItem
+                            Header="Remove from Playlist"
+                            Icon="{DynamicResource RemoveGameIcon}"
+                            InputGestureText="{Binding DataContext.RemoveGamesCommand.GestureText}"
+                            Command="{Binding DataContext.RemoveGamesCommand}"
+                            CommandParameter="{Binding SelectedItems}" />
+
                     </ContextMenu>
                 </Setter.Value>
             </Setter>

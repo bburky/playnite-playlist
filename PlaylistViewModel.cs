@@ -3,6 +3,7 @@ using Playnite.SDK.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows.Input;
 
 namespace Playlist
 {
@@ -61,7 +62,8 @@ namespace Playlist
             StartGameCommand = new RelayCommand<Game>((game) =>
             {
                 playniteApi.StartGame(game.Id);
-            });
+            },
+            new KeyGesture(Key.Enter));
 
             RemoveGamesCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
@@ -69,7 +71,11 @@ namespace Playlist
                 {
                     PlaylistGames.Remove(game);
                 }
-            });
+            }
+            // TODO:
+            //new KeyGesture(Key.Delete)
+            );
+            
 
             MoveGamesToTopCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {
