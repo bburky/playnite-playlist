@@ -37,6 +37,15 @@
                             Header="Show in Library"
                             Command="{Binding DataContext.ShowGamesInLibraryCommand}"
                             CommandParameter="{Binding SelectedItems}" />
+                        <MenuItem Header="{DynamicResource LOCSetCompletionStatus}" ItemsSource="{Binding DataContext.CompletionStatusCommands}">
+                            <MenuItem.ItemContainerStyle>
+                                <Style TargetType="MenuItem">
+                                    <Setter Property="Header" Value="{Binding Key.Name}"/>
+                                    <Setter Property="Command" Value="{Binding Value}"/>
+                                    <Setter Property="CommandParameter" Value="{Binding SelectedItems, Source={x:Reference Name=playlistListView}}" />
+                                </Style>
+                            </MenuItem.ItemContainerStyle>
+                        </MenuItem>
                         <MenuItem
                             Header="Remove from Playlist"
                             Command="{Binding DataContext.RemoveGamesCommand}"

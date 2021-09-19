@@ -26,6 +26,27 @@ namespace Playlist
 
         public RelayCommand<ObservableCollection<object>> ShowGamesInLibraryCommand { get; }
 
+        public IEnumerable<KeyValuePair<CompletionStatus, RelayCommand<IEnumerable<object>>>> CompletionStatusCommands
+        {
+            get
+            {
+                foreach (CompletionStatus completionStatus in playniteApi.Database.CompletionStatuses.OrderBy(a => a.Name))
+                {
+                    yield return new KeyValuePair<CompletionStatus, RelayCommand<IEnumerable<object>>>(
+                        completionStatus,
+                        new RelayCommand<IEnumerable<object>>((games) =>
+                        {
+                            foreach (Game game in games.Cast<Game>())
+                            {
+                                game.CompletionStatusId = completionStatus.Id;
+                                playniteApi.Database.Games.Update(game);
+                            }
+                        })
+                    );
+                }
+            }
+        }
+
         public PlaylistViewModel(Playlist playlist)
         {
             this.playlist = playlist;
@@ -82,5 +103,4 @@ namespace Playlist
             });
         }
     }
-
 }
