@@ -25,7 +25,7 @@ namespace Playlist
 
         public RelayCommand<ObservableCollection<object>> MoveGamesToBottomCommand { get; }
 
-        public RelayCommand<ObservableCollection<object>> ShowGamesInLibraryCommand { get; }
+        public RelayCommand<Game> ShowGameInLibraryCommand { get; }
 
         public IEnumerable<KeyValuePair<CompletionStatus, RelayCommand<IEnumerable<object>>>> CompletionStatusCommands
         {
@@ -61,6 +61,10 @@ namespace Playlist
 
             StartGameCommand = new RelayCommand<Game>((game) =>
             {
+                if (game == null)
+                {
+                    return;
+                }
                 playniteApi.StartGame(game.Id);
             },
             new KeyGesture(Key.Enter));
@@ -95,14 +99,12 @@ namespace Playlist
                 }
             });
 
-            ShowGamesInLibraryCommand = new RelayCommand<ObservableCollection<object>>((games) =>
+            ShowGameInLibraryCommand = new RelayCommand<Game>((game) =>
             {
-                if (games.Count == 0)
+                if (game == null)
                 {
                     return;
-                } 
-                // The Playnite API only allows selecting one game currently.
-                Game game = games.Cast<Game>().First();
+                }
                 // This does select the game, but does not currently scroll it into view
                 playniteApi.MainView.SelectGame(game.Id);
                 playniteApi.MainView.SwitchToLibraryView();

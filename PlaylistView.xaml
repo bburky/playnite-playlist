@@ -18,6 +18,24 @@
             </Style.Triggers>
         </Style>
 
+        <Style x:Key="visibleIfOneGameSelected_MenuItem" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedItems.Count}" Value="1">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
+        <Style x:Key="visibleIfOneGameSelected_Separator" TargetType="Separator" BasedOn="{StaticResource {x:Type Separator}}">
+            <Setter Property="Visibility" Value="Collapsed" />
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding SelectedItems.Count}" Value="1">
+                    <Setter Property="Visibility" Value="Visible" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>
+
         <Style TargetType="{x:Type ListViewItem}" BasedOn="{StaticResource {x:Type ListViewItem}}">
             <Style.Triggers>
                 <MultiDataTrigger>
@@ -38,14 +56,10 @@
                             Command="{Binding DataContext.StartGameCommand}"
                             CommandParameter="{Binding SelectedItems[0]}">
                             <MenuItem.Style>
-                                <Style TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
+                                <Style TargetType="MenuItem" BasedOn="{StaticResource visibleIfOneGameSelected_MenuItem}">
                                     <Setter Property="Header" Value="{DynamicResource LOCPlayGame}" />
                                     <Setter Property="Icon" Value="{DynamicResource PlayIcon}" />
-                                    <Setter Property="Visibility" Value="Collapsed" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedItems.Count}" Value="1">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
                                         <DataTrigger Binding="{Binding SelectedItems[0].IsInstalled}" Value="False" >
                                             <Setter Property="Header" Value="{DynamicResource LOCInstallGame}" />
                                             <Setter Property="Icon" Value="{DynamicResource InstallIcon}" />
@@ -54,24 +68,14 @@
                                 </Style>
                             </MenuItem.Style>
                         </MenuItem>
-                        <Separator>
-                            <Separator.Style>
-                                <Style TargetType="Separator" BasedOn="{StaticResource {x:Type Separator}}">
-                                    <Setter Property="Visibility" Value="Collapsed" />
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedItems.Count}" Value="1">
-                                            <Setter Property="Visibility" Value="Visible" />
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </Separator.Style>
-                        </Separator>
+                        <Separator Style="{StaticResource visibleIfOneGameSelected_Separator}" />
                         <MenuItem
                             Header="Show in Library"
                             Icon="{DynamicResource SidebarLibraryIcon}"
                             Command="{Binding DataContext.ShowGamesInLibraryCommand}"
-                            CommandParameter="{Binding SelectedItems}" />
-                        <Separator />
+                            CommandParameter="{Binding SelectedItems[0]}"
+                            Style="{StaticResource visibleIfOneGameSelected_MenuItem}" />
+                        <Separator Style="{StaticResource visibleIfOneGameSelected_Separator}"/>
                         <MenuItem Header="{DynamicResource LOCSetCompletionStatus}" ItemsSource="{Binding DataContext.CompletionStatusCommands}">
                             <MenuItem.ItemContainerStyle>
                                 <Style TargetType="MenuItem">
