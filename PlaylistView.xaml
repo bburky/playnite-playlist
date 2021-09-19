@@ -21,7 +21,7 @@
         <Style x:Key="visibleIfOneGameSelected_MenuItem" TargetType="MenuItem" BasedOn="{StaticResource {x:Type MenuItem}}">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedItems.Count}" Value="1">
+                <DataTrigger Binding="{Binding SelectedItems.Count, Source={x:Reference Name=playlistListView}}" Value="1">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
@@ -30,7 +30,7 @@
         <Style x:Key="visibleIfOneGameSelected_Separator" TargetType="Separator" BasedOn="{StaticResource {x:Type Separator}}">
             <Setter Property="Visibility" Value="Collapsed" />
             <Style.Triggers>
-                <DataTrigger Binding="{Binding SelectedItems.Count}" Value="1">
+                <DataTrigger Binding="{Binding SelectedItems.Count, Source={x:Reference Name=playlistListView}}" Value="1">
                     <Setter Property="Visibility" Value="Visible" />
                 </DataTrigger>
             </Style.Triggers>
@@ -50,17 +50,17 @@
             <Setter Property="ContextMenu">
                 <!-- Only set the ContextMenu for ListViewItems to avoid a ContextMenu on the header -->
                 <Setter.Value>
-                    <ContextMenu DataContext="{x:Reference Name=playlistListView}">
+                    <ContextMenu>
                         <MenuItem
-                            InputGestureText="{Binding DataContext.StartGameCommand.GestureText}"
-                            Command="{Binding DataContext.StartGameCommand}"
-                            CommandParameter="{Binding SelectedItems[0]}">
+                            InputGestureText="{Binding DataContext.StartGameCommand.GestureText, Source={x:Reference Name=playlistListView}}"
+                            Command="{Binding DataContext.StartGameCommand, Source={x:Reference Name=playlistListView}}"
+                            CommandParameter="{Binding}">
                             <MenuItem.Style>
                                 <Style TargetType="MenuItem" BasedOn="{StaticResource visibleIfOneGameSelected_MenuItem}">
                                     <Setter Property="Header" Value="{DynamicResource LOCPlayGame}" />
                                     <Setter Property="Icon" Value="{DynamicResource PlayIcon}" />
                                     <Style.Triggers>
-                                        <DataTrigger Binding="{Binding SelectedItems[0].IsInstalled}" Value="False" >
+                                        <DataTrigger Binding="{Binding IsInstalled}" Value="False" >
                                             <Setter Property="Header" Value="{DynamicResource LOCInstallGame}" />
                                             <Setter Property="Icon" Value="{DynamicResource InstallIcon}" />
                                         </DataTrigger>
@@ -72,11 +72,11 @@
                         <MenuItem
                             Header="Show in Library"
                             Icon="{DynamicResource SidebarLibraryIcon}"
-                            Command="{Binding DataContext.ShowGamesInLibraryCommand}"
-                            CommandParameter="{Binding SelectedItems[0]}"
+                            Command="{Binding DataContext.ShowGameInLibraryCommand, Source={x:Reference Name=playlistListView}}"
+                            CommandParameter="{Binding}"
                             Style="{StaticResource visibleIfOneGameSelected_MenuItem}" />
                         <Separator Style="{StaticResource visibleIfOneGameSelected_Separator}"/>
-                        <MenuItem Header="{DynamicResource LOCSetCompletionStatus}" ItemsSource="{Binding DataContext.CompletionStatusCommands}">
+                        <MenuItem Header="{DynamicResource LOCSetCompletionStatus}" ItemsSource="{Binding DataContext.CompletionStatusCommands, Source={x:Reference Name=playlistListView}}">
                             <MenuItem.ItemContainerStyle>
                                 <Style TargetType="MenuItem">
                                     <Setter Property="Header" Value="{Binding Key.Name}"/>
@@ -88,20 +88,19 @@
                         <Separator />
                         <MenuItem
                             Header="Move to Top"
-                            Command="{Binding DataContext.MoveGamesToTopCommand}"
-                            CommandParameter="{Binding SelectedItems}" />
+                            Command="{Binding DataContext.MoveGamesToTopCommand, Source={x:Reference Name=playlistListView}}"
+                            CommandParameter="{Binding SelectedItems, Source={x:Reference Name=playlistListView}}" />
                         <MenuItem
                             Header="Move to Bottom"
-                            Command="{Binding DataContext.MoveGamesToBottomCommand}"
-                            CommandParameter="{Binding SelectedItems}" />
+                            Command="{Binding DataContext.MoveGamesToBottomCommand, Source={x:Reference Name=playlistListView}}"
+                            CommandParameter="{Binding SelectedItems, Source={x:Reference Name=playlistListView}}" />
                         <Separator />
                         <MenuItem
                             Header="Remove from Playlist"
                             Icon="{DynamicResource RemoveGameIcon}"
-                            InputGestureText="{Binding DataContext.RemoveGamesCommand.GestureText}"
-                            Command="{Binding DataContext.RemoveGamesCommand}"
-                            CommandParameter="{Binding SelectedItems}" />
-
+                            InputGestureText="{Binding DataContext.RemoveGamesCommand.GestureText, Source={x:Reference Name=playlistListView}}"
+                            Command="{Binding DataContext.RemoveGamesCommand, Source={x:Reference Name=playlistListView}}"
+                            CommandParameter="{Binding SelectedItems, Source={x:Reference Name=playlistListView}}" />
                     </ContextMenu>
                 </Setter.Value>
             </Setter>
