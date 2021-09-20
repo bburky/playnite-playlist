@@ -6,10 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows.Controls;
 using System.Windows.Media;
+using Newtonsoft.Json;
 
 namespace Playlist
 {
@@ -23,7 +23,13 @@ namespace Playlist
 
         public ObservableCollection<Game> PlaylistGames { get; set; }
 
-        private const string playlistPath = "playlist.txt";
+        // Dictionary is for future-proofing only, only use the "Default" collection for now.
+        public Dictionary<string, ObservableCollection<Game>> PlaylistGamesDictionary { get; set; }
+
+        private JsonConverter jsonConverter;
+
+        private const string playlistJsonPath = "playlist.json";
+        private const string playlistTxtPath = "playlist.txt";
 
         public override IEnumerable<SidebarItem> GetSidebarItems()
         {
@@ -62,11 +68,54 @@ namespace Playlist
             // Ensure the library loaded now, relative to the extension DLL.
             // If the XAML trys to load it later it will incorrectly load it relative to Playnite's executable
             Assembly.Load("GongSolutions.WPF.DragDrop");
+
+            jsonConverter = new GameJsonConverter(PlayniteApi);
         }
 
-        private IEnumerable<Game> LoadPlaylistFile()
+        private ObservableCollection<Game> LoadPlaylistFile()
         {
-            string path = Path.Combine(GetPluginUserDataPath(), playlistPath);
+            string path = Path.Combine(GetPluginUserDataPath(), playlistJsonPath);
+            if (File.Exists(path))
+            {
+                PlaylistGamesDictionary = JsonConvert.DeserializeObject<Dictionary<string, ObservableCollection<Game>>>(
+                    File.ReadAllText(path),
+                    jsonConverter
+                );
+            }
+            else
+            {
+                // Set a default value for the Dictionary, and also perform migration from old txt format
+                PlaylistGamesDictionary = new Dictionary<string, ObservableCollection<Game>>
+                {
+                    ["Default"] = new ObservableCollection<Game>(LoadPlaylistFileTxt())
+                };
+
+                string txtPath = Path.Combine(GetPluginUserDataPath(), playlistTxtPath);
+                if (File.Exists(txtPath))
+                {
+                    UpdatePlaylistFile();
+                    File.Delete(txtPath);
+                }
+            }
+
+            // Dictionary is for future-proofing only, only use the "Default" collection for now.
+            ObservableCollection<Game> playlist = PlaylistGamesDictionary["Default"];
+
+            // Remove any nulls (games may have been removed from the library)
+            for (int i = playlist.Count - 1; i >= 0; i--)
+            {
+                if (playlist[i] == null)
+                {
+                    playlist.RemoveAt(i);
+                }
+            }
+
+            return playlist;
+        }
+        private IEnumerable<Game> LoadPlaylistFileTxt()
+        {
+            // Load old txt format playlist
+            string path = Path.Combine(GetPluginUserDataPath(), playlistTxtPath);
             if (File.Exists(path))
             {
                 foreach (string guid in File.ReadLines(path))
@@ -79,20 +128,20 @@ namespace Playlist
                 }
             }
         }
-
         private void UpdatePlaylistFile()
         {
-            string path = Path.Combine(GetPluginUserDataPath(), playlistPath);
-            File.WriteAllLines(path, PlaylistGames.Select((g) => g.Id.ToString()));
+            string path = Path.Combine(GetPluginUserDataPath(), playlistJsonPath);
+            string json = JsonConvert.SerializeObject(PlaylistGamesDictionary, Formatting.Indented, jsonConverter);
+            File.WriteAllText(path, json);
         }
 
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
             // Initialization is done inside OnApplicationStarted, otherwise
-            // loadPlaylistFile runs too early in Playnite's startup and
+            // LoadPlaylistFile runs too early in Playnite's startup and
             // cannot call PlayniteApi.Database.Games.Get()
 
-            PlaylistGames = new ObservableCollection<Game>(LoadPlaylistFile());
+            PlaylistGames = LoadPlaylistFile();
             PlaylistGames.CollectionChanged += (sender, changedArgs) =>
             {
                 UpdatePlaylistFile();
