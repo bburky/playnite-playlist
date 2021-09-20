@@ -3,6 +3,7 @@ using Playnite.SDK.Models;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
+using System.Windows;
 using System.Windows.Input;
 
 namespace Playlist
@@ -59,27 +60,38 @@ namespace Playlist
                 playniteApi.MainView.SwitchToLibraryView();
             });
 
-            StartGameCommand = new RelayCommand<Game>((game) =>
-            {
-                if (game == null)
+            StartGameCommand = new RelayCommand<Game>(
+                (game) =>
                 {
-                    return;
-                }
-                playniteApi.StartGame(game.Id);
-            },
-            new KeyGesture(Key.Enter));
-
-            RemoveGamesCommand = new RelayCommand<ObservableCollection<object>>((games) =>
-            {
-                foreach (Game game in games.Cast<Game>().ToList())
-                {
-                    PlaylistGames.Remove(game);
-                }
-            }
-            // TODO:
-            //new KeyGesture(Key.Delete)
+                    if (game == null)
+                    {
+                        return;
+                    }
+                    playniteApi.StartGame(game.Id);
+                },
+                new KeyGesture(Key.Enter)
             );
-            
+
+            RemoveGamesCommand = new RelayCommand<ObservableCollection<object>>(
+                (games) =>
+                {
+                    if (playniteApi.Dialogs.ShowMessage(
+                        string.Format(playniteApi.Resources.GetString("LOCGamesRemoveAskMessage"), games.Count()),
+                        "LOCGameRemoveAskTitle",
+                        MessageBoxButton.YesNo,
+                        MessageBoxImage.Question) != MessageBoxResult.Yes)
+                    {
+                        return;
+                    }
+
+                    foreach (Game game in games.Cast<Game>().ToList())
+                    {
+                        PlaylistGames.Remove(game);
+                    }
+                },
+                new KeyGesture(Key.Delete)
+            );
+
 
             MoveGamesToTopCommand = new RelayCommand<ObservableCollection<object>>((games) =>
             {

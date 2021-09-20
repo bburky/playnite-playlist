@@ -188,8 +188,16 @@
             DockPanel.Dock="Top"
             Margin="0,10,0,0"
             BorderThickness="0"
+            SelectedIndex="0"
             dd:DragDrop.IsDragSource="True"
             dd:DragDrop.IsDropTarget="True">
+            <ListView.InputBindings>
+                <KeyBinding
+                    Key="Delete"
+                    Command="{Binding RemoveGamesCommand}"
+                    CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ListView}}, Path=SelectedItems}" />
+            </ListView.InputBindings>
+
             <ListView.View>
                 <GridView>
                     <GridViewColumn Header="" Width="55">
