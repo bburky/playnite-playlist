@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:dd="urn:gong-wpf-dragdrop"
+             xmlns:local="clr-namespace:Playlist"
              mc:Ignorable="d"
              d:DesignHeight="400" d:DesignWidth="600">
 
@@ -167,6 +168,14 @@
             </Style.Triggers>
         </Style>
 
+        <DataTemplate x:Key="howLongToBeatColumn" DataType="GridViewColumn.CellTemplate">
+            <DockPanel >
+                <!-- TODO: Hide button except on hover/selection -->
+                <local:HowLongToBeatPluginButton Margin="10,0,0,0" DockPanel.Dock="Right"/>
+                <local:HowLongToBeatProgressBar Height="30"/>
+            </DockPanel>
+        </DataTemplate>
+
     </UserControl.Resources>
  
     <DockPanel>
@@ -220,6 +229,7 @@
                     <GridViewColumn Header="{DynamicResource LOCNameLabel}" Width="500" DisplayMemberBinding="{Binding Name}" />
                     <GridViewColumn Width="150" Header="{DynamicResource LOCTimePlayed}" DisplayMemberBinding="{Binding Playtime, Converter={StaticResource PlayTimeToStringConverter}}"/>
                     <GridViewColumn Width="150" Header="{DynamicResource LOCCompletionStatus}" DisplayMemberBinding="{Binding CompletionStatus}" />
+                    <GridViewColumn Width="400" Header="{DynamicResource LOCHowLongToBeat}" CellTemplate="{StaticResource howLongToBeatColumn}" />
                 </GridView>
             </ListView.View>
         </ListView>
