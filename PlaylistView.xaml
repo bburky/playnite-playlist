@@ -47,6 +47,8 @@
                 </MultiDataTrigger>
             </Style.Triggers>
 
+            <EventSetter Event="MouseDoubleClick" Handler="OnItemDoubleClick"/>
+
             <Setter Property="ContextMenu">
                 <!-- Only set the ContextMenu for ListViewItems to avoid a ContextMenu on the header -->
                 <Setter.Value>
@@ -166,7 +168,6 @@
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-
     </UserControl.Resources>
  
     <DockPanel>
@@ -181,7 +182,7 @@
                 Style="{StaticResource BaseTextBlockStyle}"
                 Margin="10,0,0,0" FontSize="18"/>
         </StackPanel>
- 
+
         <ListView
             x:Name="playlistListView"
             ItemsSource="{Binding PlaylistGames}"
@@ -191,6 +192,7 @@
             SelectedIndex="0"
             dd:DragDrop.IsDragSource="True"
             dd:DragDrop.IsDropTarget="True">
+
             <ListView.InputBindings>
                 <KeyBinding
                     Key="Delete"

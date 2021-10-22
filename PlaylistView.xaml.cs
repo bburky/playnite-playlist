@@ -29,5 +29,11 @@ namespace Playlist
             DataContext = model;
             InitializeComponent();
         }
+
+        private void OnItemDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            Control item = sender as Control;
+            (DataContext as PlaylistViewModel)?.StartGameCommand.Execute(item?.DataContext);
+        }
     }
 }
