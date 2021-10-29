@@ -36,7 +36,14 @@ namespace Playlist
                     Text = "\ueca6", // Circled play button
                     FontFamily = ResourceProvider.GetResource("FontIcoFont") as FontFamily,
                 },
-                Opened = () => { return PlaylistView; }
+                Opened = () => {
+                    if (PlaylistViewModel == null)
+                    {
+                        PlaylistViewModel = new PlaylistViewModel(this);
+                        PlaylistView = new PlaylistView(PlaylistViewModel);
+                    }
+                    return PlaylistView;
+                }
             };
         }
         public override IEnumerable<GameMenuItem> GetGameMenuItems(GetGameMenuItemsArgs args)
@@ -104,8 +111,6 @@ namespace Playlist
                     PlaylistGames.Remove(game);
                 }
             };
-            PlaylistViewModel = new PlaylistViewModel(this);
-            PlaylistView = new PlaylistView(PlaylistViewModel);
         }
     }
 }
