@@ -95,22 +95,30 @@ namespace Playlist
 
         public override void OnApplicationStarted(OnApplicationStartedEventArgs args)
         {
-            // Initialization is done inside OnApplicationStarted, otherwise
-            // loadPlaylistFile runs too early in Playnite's startup and
-            // cannot call PlayniteApi.Database.Games.Get()
+            try
+            {
+                // Initialization is done inside OnApplicationStarted, otherwise
+                // loadPlaylistFile runs too early in Playnite's startup and
+                // cannot call PlayniteApi.Database.Games.Get()
 
-            PlaylistGames = new ObservableCollection<Game>(LoadPlaylistFile());
-            PlaylistGames.CollectionChanged += (sender, changedArgs) =>
-            {
-                UpdatePlaylistFile();
-            };
-            PlayniteApi.Database.Games.ItemCollectionChanged += (sender, changedArgs) =>
-            {
-                foreach (Game game in changedArgs.RemovedItems)
+                PlaylistGames = new ObservableCollection<Game>(LoadPlaylistFile());
+                PlaylistGames.CollectionChanged += (sender, changedArgs) =>
                 {
-                    PlaylistGames.Remove(game);
-                }
-            };
+                    UpdatePlaylistFile();
+                };
+                PlayniteApi.Database.Games.ItemCollectionChanged += (sender, changedArgs) =>
+                {
+                    foreach (Game game in changedArgs.RemovedItems)
+                    {
+                        PlaylistGames.Remove(game);
+                    }
+                };
+            }
+            catch (Exception e)
+            {
+                logger.Error(e, "Error loading PlaylistGames in OnApplicationStarted");
+                PlayniteApi.Notifications.Add($"{Id}-OnApplicationStarted", $"Playlist extension could not load file: {e.Message}", NotificationType.Error);
+            }
         }
     }
 }

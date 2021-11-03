@@ -1,5 +1,6 @@
 ﻿using Playnite.SDK;
 using Playnite.SDK.Models;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -49,8 +50,8 @@ namespace Playlist
 
         public PlaylistViewModel(ObservableCollection<Game> playlistGames, IPlayniteAPI playniteApi)
         {
-            PlaylistGames = playlistGames;
-            this.playniteApi = playniteApi;
+            PlaylistGames = playlistGames ?? throw new ArgumentNullException(nameof(playlistGames));
+            this.playniteApi = playniteApi ?? throw new ArgumentNullException(nameof(playniteApi));
 
             NavigateBackCommand = new RelayCommand<object>((a) =>
             {
