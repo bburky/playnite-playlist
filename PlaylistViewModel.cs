@@ -10,8 +10,6 @@ namespace Playlist
 {
     public class PlaylistViewModel : ObservableObject
     {
-        private readonly Playlist playlist;
-
         private readonly IPlayniteAPI playniteApi;
 
         public ObservableCollection<Game> PlaylistGames { get; set; }
@@ -49,11 +47,10 @@ namespace Playlist
             }
         }
 
-        public PlaylistViewModel(Playlist playlist)
+        public PlaylistViewModel(ObservableCollection<Game> playlistGames, IPlayniteAPI playniteApi)
         {
-            this.playlist = playlist;
-            PlaylistGames = playlist.PlaylistGames;
-            playniteApi = playlist.PlayniteApi;
+            PlaylistGames = playlistGames;
+            this.playniteApi = playniteApi;
 
             NavigateBackCommand = new RelayCommand<object>((a) =>
             {

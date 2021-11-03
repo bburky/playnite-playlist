@@ -39,7 +39,7 @@ namespace Playlist
                 Opened = () => {
                     if (PlaylistViewModel == null)
                     {
-                        PlaylistViewModel = new PlaylistViewModel(this);
+                        PlaylistViewModel = new PlaylistViewModel(PlaylistGames, PlayniteApi);
                         PlaylistView = new PlaylistView(PlaylistViewModel);
                     }
                     return PlaylistView;
