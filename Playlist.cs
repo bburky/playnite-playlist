@@ -56,7 +56,7 @@ namespace Playlist
                 {
                     foreach (Game game in args.Games)
                     {
-                        PlaylistViewModel.PlaylistGames.AddMissing(game);
+                        PlaylistGames.AddMissing(game);
                     }
                 }
             };
