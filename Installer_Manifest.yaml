@@ -5,4 +5,4 @@ Packages:
     ReleaseDate: 2021-11-02
     PackageUrl: https://github.com/bburky/playnite-playlist/releases/download/v1.4.2/Playlist-v1.4.2.pext
     Changelog:
-      - "Fix bug introduced in v1.4.1 when selecting "Add to Playlist" before opening sidebar"
+      - "Fix bug introduced in v1.4.1 when selecting 'Add to Playlist' before opening sidebar"
