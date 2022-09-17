@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="LOCPlaylist_Playlist">Playlist</sys:String>
+    <sys:String x:Key="LOCPlaylist_AddToPlaylist">Add to Playlist</sys:String>
+    <sys:String x:Key="LOCPlaylist_ErrorNotLoadFile">Playlist extension could not load file:</sys:String>
+    <sys:String x:Key="LOCPlaylist_ShowInLibrary">Show in Library</sys:String>
+    <sys:String x:Key="LOCPlaylist_MoveToTop">Move to Top</sys:String>
+    <sys:String x:Key="LOCPlaylist_MoveToBottom">Move to Bottom</sys:String>
+    <sys:String x:Key="LOCPlaylist_RemoveFromPlaylist">Remove from Playlist</sys:String>
+    <sys:String x:Key="LOCPlaylist_EmptyPlaylistMessage">Right click a game in the library and select "Add to Playlist"</sys:String>
+</ResourceDictionary>
+
