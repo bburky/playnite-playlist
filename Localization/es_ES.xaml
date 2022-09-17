@@ -1,0 +1,12 @@
+﻿<?xml version="1.0"?>
+<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:sys="clr-namespace:System;assembly=mscorlib">
+    <sys:String x:Key="LOCPlaylist_Playlist">Lista de juegos pendientes</sys:String>
+    <sys:String x:Key="LOCPlaylist_AddToPlaylist">Añadir a la lista de juegos pendientes</sys:String>
+    <sys:String x:Key="LOCPlaylist_ErrorNotLoadFile">La extension Playlist no pudo cargar el archivo:</sys:String>
+    <sys:String x:Key="LOCPlaylist_ShowInLibrary">Mostrar en biblioteca</sys:String>
+    <sys:String x:Key="LOCPlaylist_MoveToTop">Mover al principio</sys:String>
+    <sys:String x:Key="LOCPlaylist_MoveToBottom">Mover al final</sys:String>
+    <sys:String x:Key="LOCPlaylist_RemoveFromPlaylist">Eliminar de la lista de juegos pendientes</sys:String>
+    <sys:String x:Key="LOCPlaylist_EmptyPlaylistMessage">En la biblioteca haga clic derecho en un juego y seleccione "Añadir a la lista de juegos pendientes"</sys:String>
+</ResourceDictionary>
+
