@@ -178,7 +178,7 @@
                         FontSize="26" />
                 </Hyperlink>
             </TextBlock>
-            <TextBlock Text="Playlist" VerticalAlignment="Center"
+            <TextBlock Text="{DynamicResource LOCPlaylist_Playlist}" VerticalAlignment="Center"
                 Style="{StaticResource BaseTextBlockStyle}"
                 Margin="10,0,0,0" FontSize="18"/>
         </StackPanel>
