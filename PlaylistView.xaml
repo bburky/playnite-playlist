@@ -72,7 +72,7 @@
                         </MenuItem>
                         <Separator Style="{StaticResource visibleIfOneGameSelected_Separator}" />
                         <MenuItem
-                            Header="Show in Library"
+                            Header="{DynamicResource LOCPlaylist_ShowInLibrary}"
                             Icon="{DynamicResource SidebarLibraryIcon}"
                             Command="{Binding DataContext.ShowGameInLibraryCommand, Source={x:Reference Name=playlistListView}}"
                             CommandParameter="{Binding}"
@@ -89,16 +89,16 @@
                         </MenuItem>
                         <Separator />
                         <MenuItem
-                            Header="Move to Top"
+                            Header="{DynamicResource LOCPlaylist_MoveToTop}"
                             Command="{Binding DataContext.MoveGamesToTopCommand, Source={x:Reference Name=playlistListView}}"
                             CommandParameter="{Binding SelectedItems, Source={x:Reference Name=playlistListView}}" />
                         <MenuItem
-                            Header="Move to Bottom"
+                            Header="{DynamicResource LOCPlaylist_MoveToBottom}"
                             Command="{Binding DataContext.MoveGamesToBottomCommand, Source={x:Reference Name=playlistListView}}"
                             CommandParameter="{Binding SelectedItems, Source={x:Reference Name=playlistListView}}" />
                         <Separator />
                         <MenuItem
-                            Header="Remove from Playlist"
+                            Header="{DynamicResource LOCPlaylist_RemoveFromPlaylist}"
                             Icon="{DynamicResource RemoveGameIcon}"
                             InputGestureText="{Binding DataContext.RemoveGamesCommand.GestureText, Source={x:Reference Name=playlistListView}}"
                             Command="{Binding DataContext.RemoveGamesCommand, Source={x:Reference Name=playlistListView}}"
@@ -178,7 +178,7 @@
                         FontSize="26" />
                 </Hyperlink>
             </TextBlock>
-            <TextBlock Text="Playlist" VerticalAlignment="Center"
+            <TextBlock Text="{DynamicResource LOCPlaylist_Playlist}" VerticalAlignment="Center"
                 Style="{StaticResource BaseTextBlockStyle}"
                 Margin="10,0,0,0" FontSize="18"/>
         </StackPanel>
@@ -225,8 +225,6 @@
                 </GridView>
             </ListView.View>
         </ListView>
-        <TextBlock Style="{StaticResource noGamesText}" TextAlignment="Center" VerticalAlignment="Center">
-            Right click a game in the library and select "Add to Playlist"
-        </TextBlock>
+        <TextBlock Style="{StaticResource noGamesText}" TextAlignment="Center" VerticalAlignment="Center" Text="{DynamicResource LOCPlaylist_EmptyPlaylistMessage}"/>
     </DockPanel>
 </UserControl>

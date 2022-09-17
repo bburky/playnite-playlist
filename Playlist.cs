@@ -29,7 +29,7 @@ namespace Playlist
         {
             yield return new SidebarItem
             {
-                Title = "Playlist",
+                Title = ResourceProvider.GetString("LOCPlaylist_Playlist"),
                 Type = SiderbarItemType.View,
                 Icon = new TextBlock
                 {
@@ -50,7 +50,7 @@ namespace Playlist
         {
             yield return new GameMenuItem
             {
-                Description = "Add to Playlist",
+                Description = ResourceProvider.GetString("LOCPlaylist_AddToPlaylist"),
                 Icon = Path.Combine(Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location), "icon.png"),
                 Action = (itemArgs) =>
                 {
@@ -117,7 +117,7 @@ namespace Playlist
             catch (Exception e)
             {
                 logger.Error(e, "Error loading PlaylistGames in OnApplicationStarted");
-                PlayniteApi.Notifications.Add($"{Id}-OnApplicationStarted", $"Playlist extension could not load file: {e.Message}", NotificationType.Error);
+                PlayniteApi.Notifications.Add($"{Id}-OnApplicationStarted", $"{ResourceProvider.GetString("LOCPlaylist_ErrorNotLoadFile")} {e.Message}", NotificationType.Error);
             }
         }
     }
