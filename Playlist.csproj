@@ -90,6 +90,7 @@
     <ItemGroup>
       <ZipFiles Include="README.md" />
       <ZipFiles Include="LICENSE" />
+      <ZipFiles Include="Localization" />
       <ZipFiles Include="$(OutputPath)*" Exclude="$(OutputPath)Playnite.SDK.*" />
     </ItemGroup>
     <Exec Command="PowerShell -NoProfile -command Compress-Archive -Force @(ZipFiles, ',') '$(OutputPath)..\$(AssemblyName).zip' ; Move-Item '$(OutputPath)..\$(AssemblyName).zip' '$(OutputPath)..\$(AssemblyName).pext'" />
